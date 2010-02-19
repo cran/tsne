@@ -17,7 +17,7 @@ tsne(X, initial_config = NULL, k = 2, initial_dims = 30, perplexity = 30, max_it
 	The R matrix or "dist" object
 }
   \item{initial_config}{
-	an argument providing a matrix specifying the initial embedding for X.
+	an argument providing a matrix specifying the initial embedding for X.  See Details.
 }
   \item{k}{
 	the dimension of the resulting embedding.
@@ -35,10 +35,10 @@ tsne(X, initial_config = NULL, k = 2, initial_dims = 30, perplexity = 30, max_it
 	The minimum cost value (error) to halt iteration.
 }
   \item{epoch_callback}{
-	A callback function used after each epoch (10 iterations)
+	A callback function used after each epoch (an epoch here means a set number of iterations)
 }
   \item{whiten}{
-	A boolean value indicating whether the matrix data should be whitened by the function.
+	A boolean value indicating whether the matrix data should be whitened.
 }
   \item{epoch}{
 	The number of iterations in between update messages.
@@ -50,13 +50,17 @@ tsne(X, initial_config = NULL, k = 2, initial_dims = 30, perplexity = 30, max_it
 \value{
 	An R object containing a \emph{ydata} embedding matrix, as well as a the matrix of probabilities \emph{P}
 }
+\details{
+	When the initial_config argument is specified, the algorithm will automatically enter the \emph{final momentum} stage.  This stage has less large scale adjustment to the embedding, and is intended for small scale tweaking of positioning.  This can greatly speed up the generation of embeddings for various similar X datasets, while also preserving overall embedding orientation.
+
+}
 \references{
  L.J.P. van der Maaten and G.E. Hinton. Visualizing High-Dimensional Data Using t-SNE. \emph{Journal of Machine Learning Research} 9 (Nov) : 2579-2605, 2008. 
 
  L.J.P. van der Maaten. Learning a Parametric Embedding by Preserving Local Structure. In \emph{Proceedings of the Twelfth International Conference on Artificial Intelligence and Statistics} (AISTATS), JMLR W&CP 5:384-391, 2009. 
 }
 \author{
-Justin Donaldson
+Justin Donaldson (jdonaldson@gmail.com)
 }
 %%\note{
 %%  ~~further notes~~
@@ -72,9 +76,6 @@ colors = rainbow(length(unique(iris$Species)))
 names(colors) = unique(iris$Species)
 ecb = function(x,y){ plot(x,t='n'); text(x,labels=iris$Species, col=colors[iris$Species]) }
 tsne_iris = tsne(iris[,1:4], epoch_callback = ecb, perplexity=50)
-
-# sometimes scaling instead of whitening produces superior results
-# tsne_iris = tsne(scale(iris[,1:4]), epoch_callback = ecb, perplexity=50,whiten=F)
 
 # compare to PCA
 dev.new()

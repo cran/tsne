@@ -22,7 +22,6 @@ LazyLoad: \tab yes\cr
 \author{
 Justin Donaldson
 http://www.scwn.net
-
 Maintainer: Justin Donaldson (jdonaldson@gmail.com)
 }
 \references{

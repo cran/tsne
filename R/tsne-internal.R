@@ -2,8 +2,13 @@
 function(D, beta){
 	P = exp(-D * beta)
 	sumP = sum(P)
-	H = log(sumP) + beta * sum(D * P) /sumP
-	P = P/sumP
+	if (sumP == 0){
+		H = 0
+		P = D * 0
+	} else {
+		H = log(sumP) + beta * sum(D %*% P) /sumP
+		P = P/sumP
+	}
 	r = {}
 	r$H = H
 	r$P = P
@@ -14,11 +19,12 @@ function(D, beta){
 function(X,perplexity = 15,tol = 1e-5){
 	if (class(X) == 'dist') {
 		D = X
+		n = attr(D,'Size')
 	} else{
-		D = dist(X)^2 # remove the square once this is resolved
+		D = dist(X)
+		n = attr(D,'Size')
 	}
 
-	n = attr(D,'Size')
 	D = as.matrix(D)
 	P = matrix(0, n, n )		
 	beta = rep(1, n)
@@ -28,7 +34,7 @@ function(X,perplexity = 15,tol = 1e-5){
 		betamin = -Inf
 		betamax = Inf
 		Di = D[i, -i]
-		hbeta= .Hbeta(Di, beta[i])
+		hbeta = .Hbeta(Di, beta[i])
 		H = hbeta$H; 
 		thisP = hbeta$P
 		Hdiff = H - logU;
