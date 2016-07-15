@@ -21,7 +21,7 @@ LazyLoad: \tab yes\cr
 }
 \author{
 Justin Donaldson
-http://www.scwn.net
+https://github.com/jdonaldson/rtsne
 Maintainer: Justin Donaldson (jdonaldson@gmail.com)
 }
 \references{
